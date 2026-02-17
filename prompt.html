@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Bones About It — AI Research Prompt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-bg: oklch(0.97 0.008 55);
+  --color-surface: #fff;
+  --color-text: oklch(0.25 0.02 45);
+  --color-text-secondary: oklch(0.45 0.03 50);
+  --color-text-muted: oklch(0.58 0.02 50);
+  --color-primary: oklch(0.52 0.12 38);
+  --color-primary-hover: oklch(0.46 0.13 38);
+  --color-accent: oklch(0.62 0.14 55);
+  --color-border: oklch(0.88 0.015 55);
+  --color-border-light: oklch(0.92 0.01 55);
+  --color-highlight: oklch(0.95 0.04 55);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-body-sans: 'Source Sans 3', system-ui, sans-serif;
+  --font-mono: 'Source Code Pro', monospace;
+  --shadow-sm: 0 1px 3px hsla(25, 40%, 30%, 0.06);
+  --shadow-md: 0 2px 8px hsla(25, 40%, 30%, 0.08);
+  --shadow-lg: 0 4px 16px hsla(25, 40%, 30%, 0.10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.page-header .subtitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  margin-top: 0.5rem;
+}
+
+.page-header .meta {
+  font-family: var(--font-body-sans);
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-top: 1rem;
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Instructions card */
+.instructions {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.instructions h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.instructions ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.instructions li {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-secondary);
+}
+
+.instructions li strong {
+  color: var(--color-text);
+}
+
+.starter-questions {
+  background: var(--color-highlight);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.starter-questions h3 {
+  font-family: var(--font-body-sans);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.starter-questions ul {
+  list-style: none;
+  padding: 0;
+}
+
+.starter-questions li {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-primary);
+  padding: 0.3rem 0;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.starter-questions li:hover { opacity: 0.7; }
+
+.starter-questions li::before {
+  content: '\203A\00a0';
+  color: var(--color-accent);
+}
+
+/* Copy button */
+.copy-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.copy-btn {
+  font-family: var(--font-body-sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  min-height: 52px;
+  min-width: 44px;
+}
+
+.copy-btn:hover { background: var(--color-primary-hover); }
+.copy-btn:active { transform: scale(0.98); }
+
+.copy-btn.copied {
+  background: oklch(0.50 0.12 145);
+}
+
+.copy-note {
+  font-family: var(--font-body-sans);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 0.75rem;
+}
+
+/* Prompt preview */
+.prompt-preview {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.prompt-preview__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-highlight);
+  border-bottom: 1px solid var(--color-border-light);
+  cursor: pointer;
+  user-select: none;
+}
+
+.prompt-preview__header h3 {
+  font-family: var(--font-body-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.prompt-preview__toggle {
+  font-family: var(--font-body-sans);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.prompt-preview__body {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1.25rem;
+  transition: max-height 0.3s ease;
+}
+
+.prompt-preview__body.expanded {
+  max-height: none;
+}
+
+.prompt-preview__body pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Nav link */
+.nav-link {
+  display: block;
+  text-align: center;
+  margin-top: 2rem;
+  font-family: var(--font-body-sans);
+  font-size: 14px;
+}
+
+.nav-link a {
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.nav-link a:hover { border-bottom-color: var(--color-primary); }
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-family: var(--font-body-sans);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  margin-top: 3rem;
+}
+
+@media print {
+  .copy-container, .prompt-preview__header { display: none; }
+  .prompt-preview__body { max-height: none; overflow: visible; }
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>No Bones About It</h1>
+  <div class="subtitle">Market Research — AI Exploration Prompt</div>
+  <div class="meta">Copy the prompt below into ChatGPT, Claude, Gemini, or any LLM to explore the research interactively.</div>
+</header>
+
+<main>
+
+<section class="instructions">
+  <h2>How to use this</h2>
+  <ol>
+    <li>Click <strong>"Copy Prompt to Clipboard"</strong> below</li>
+    <li>Open your LLM of choice — <strong>ChatGPT</strong>, <strong>Claude</strong>, <strong>Gemini</strong>, or any other</li>
+    <li>Paste the prompt into a new conversation</li>
+    <li>Start asking questions — the model will have full context on the show, all 10 theatre targets, promotional opportunities, and marketing strategy</li>
+  </ol>
+  <div class="starter-questions">
+    <h3>Good Starting Questions</h3>
+    <ul>
+      <li onclick="navigator.clipboard.writeText(this.textContent.trim().substring(2))">"Which of these theatres should we contact first and why?"</li>
+      <li onclick="navigator.clipboard.writeText(this.textContent.trim().substring(2))">"Draft a pitch email to the Barn Dinner Theatre in Greensboro"</li>
+      <li onclick="navigator.clipboard.writeText(this.textContent.trim().substring(2))">"What would a one-sheet for this show look like?"</li>
+      <li onclick="navigator.clipboard.writeText(this.textContent.trim().substring(2))">"Help me think through a BBQ festival activation at Memphis in May"</li>
+      <li onclick="navigator.clipboard.writeText(this.textContent.trim().substring(2))">"What's the strongest promotional angle for the Carolinas specifically?"</li>
+      <li onclick="navigator.clipboard.writeText(this.textContent.trim().substring(2))">"Draft social media posts for a #CharCrossedLovers campaign"</li>
+      <li onclick="navigator.clipboard.writeText(this.textContent.trim().substring(2))">"Help me write the script for a 45-second teaser video"</li>
+    </ul>
+  </div>
+</section>
+
+<div class="copy-container">
+  <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt to Clipboard</button>
+  <div class="copy-note">The prompt is ~6,000 words. It fits within the context window of all major LLMs.</div>
+</div>
+
+<div class="prompt-preview">
+  <div class="prompt-preview__header" onclick="togglePreview()">
+    <h3>Preview the prompt</h3>
+    <span class="prompt-preview__toggle" id="toggleLabel">Click to expand</span>
+  </div>
+  <div class="prompt-preview__body" id="previewBody">
+    <pre id="promptText">You are a theatre marketing and licensing strategist. You have been given comprehensive market research for a musical comedy called "No Bones About It." Your job is to help the user explore this research, develop strategy, draft outreach materials, and brainstorm creative marketing approaches.
+
+Be direct, specific, and practical. This is for working theatre professionals, not a general audience. When suggesting outreach, be concrete — draft actual emails, actual one-sheet copy, actual social media posts. When analyzing targets, use the data provided.
+
+---
+
+## THE SHOW
+
+**Title:** No Bones About It
+**Creators:** Dave Hudson (book &amp; lyrics) and Paul Libman (music)
+**Credentials:** Two-time Richard Rodgers Award winners. Dave has written 21+ musicals and teaches playwriting and lyric writing in Chicago. Paul built a successful commercial music company and was fronting his own jazz trio at 17.
+**Website:** https://libmanhudson.com/shows/no-bones-about-it/
+**Licensing:** Northern Sky Licensing — (920) 854-6117 — https://northernskylicensing.com/
+
+**Concept:** Romeo and Juliet hilariously reimagined in the world of competitive barbecue. At the Verona International Ribfest, two rival smokehouses — Monty's Jurassic Pork (perfects secret sauces) and Cappy's Happy Pig (scientifically determines the dry rub) — are locked in a feud. Their children Ronny and Julie are "char-crossed" lovers who desperately try to hide their romance while their families compete for the top prize. The situation unravels when food bloggers with smartphones arrive. Happy ending (unlike the original).
+
+**Tagline:** "Two smokehouses, both alike in dignity"
+
+**Cast:** 3 women, 4 men (7 total — very small, very licensable)
+**Band:** Piano, bass, drums, guitar — acoustic and electric (4 piece)
+**Songs include:** "We Love Food," "Variety is the Spice of Life," "No Bones About It"
+
+**Production History:**
+- World premiere at Northern Sky Theater, Peninsula State Park, Door County, Wisconsin (2015)
+- Return engagement at Northern Sky (2016)
+- Revival at Northern Sky, 2025 summer season (current)
+
+**Critical Reception:** Described as "funny, tuneful, and has that wonderful momentum you crave in a musical."
+
+**Why This Show Has a Built-In Marketing Advantage:** The show IS about BBQ culture. Audiences in BBQ regions will recognize and delight in the specificity. Cross-promotion with local smokehouses, BBQ festivals, and competition circuits is natural. No other musical has this advantage.
+
+---
+
+## THE RESEARCH
+
+We programmatically searched 19 East Coast and Southern markets using OpenStreetMap data, finding 476 BBQ restaurants and 630 theatres within 5 miles of them. We then enriched the top targets with web research on their seasons, programming, contacts, and fit.
+
+### TOP 10 TARGETS (Ranked)
+
+**1. Raleigh Little Theatre — Raleigh, NC**
+- Type: Community / non-profit theatre
+- Produces musicals: YES (2025-26: 1776, School of Rock, Hadestown: Teen Edition, Cinderella)
+- Cast size range: 8-30
+- Contact: Michele Weathers (Producing Artistic Director), 919-821-4579 x221; Box Office 919-821-3111
+- Nearest BBQ: Crave Hot Dogs &amp; BBQ (0.68 mi), The Pit (1.69 mi), Sam Jones BBQ (1.73 mi)
+- Promotional angle: "Ribfest + Renaissance" ticket package with The Pit/Sam Jones plus post-show BBQ sauce vote
+- Confidence: HIGH
+
+**2. Centre Stage — Greenville, SC**
+- Type: Professional theatre (thrust stage)
+- Produces musicals: YES (A Gentleman's Guide to Love &amp; Murder, Beehive: The 60s Musical)
+- Cast size range: 6-20
+- Contact: Laura Nicholas (Executive Artistic Director), 864-233-6733 ext. 101
+- Nearest BBQ: Mac's Speed Shop (0.54 mi), MooHogz Craft BBQ (0.69 mi), Lewis Barbecue (0.82 mi)
+- Promotional angle: "Carolina Gold Night" with mustard-sauce tasting and themed concessions
+- Confidence: HIGH
+
+**3. Asheville Community Theatre — Asheville, NC**
+- Type: Community theatre
+- Produces musicals: YES (RENT, Hello Dolly!, In the Heights)
+- Cast size range: 10-30
+- Contact: Eli Cunningham (Executive Director), 828-254-1320 x108
+- Nearest BBQ: Huli Sue's BBQ and Grill (0.33 mi), Luella's BBQ (1.26 mi), Little Pigs BBQ (1.59 mi)
+- Promotional angle: "Mountain BBQ + Musical Weekend" bundles tied to downtown dining partners
+- Confidence: HIGH
+
+**4. Charleston Stage at Dock Street Theatre — Charleston, SC**
+- Type: Regional producer in city-owned historic venue
+- Produces musicals: YES (Spelling Bee, Come From Away)
+- Cast size range: 9-25
+- Contact: Marybeth Clark (Artistic Director) 843-225-3901; Timothy Rogers (Managing Director) 843-647-7361
+- Nearest BBQ: Poogan's Smokehouse (0.19 mi), Galpao Gaucho (0.15 mi)
+- Promotional angle: "Char-Crossed in Charleston" pre-show BBQ crawl through the French Quarter
+- Confidence: HIGH
+
+**5. Virginia Repertory Theatre — Richmond, VA**
+- Type: Regional professional theatre
+- Produces musicals: YES (Come From Away, Flat Stanley)
+- Cast size range: 7-24
+- Contact: Rick Hammerly (Artistic Director) 804-783-1688 ext. 1262; tickets@virginiarep.org
+- Nearest BBQ: Oak &amp; Apple (1.31 mi), Alamo BBQ (1.53 mi)
+- Promotional angle: "Broadway + Barbecue in Richmond" dinner voucher add-on
+- Confidence: MEDIUM-HIGH
+
+**6. Theatre Memphis — Memphis, TN**
+- Type: Community theatre
+- Produces musicals: YES (Mamma Mia!, Legally Blonde)
+- Cast size range: 8-30
+- Contact: Debbie Litch (Executive Producer) 901-682-8601
+- Nearest BBQ: Corky's Ribs &amp; BBQ (1.28 mi), Central BBQ (2.40 mi)
+- Promotional angle: "Memphis Music + Memphis Smoke" cross-promo with Central/Corky's
+- Confidence: MEDIUM-HIGH
+
+**7. Nashville Repertory Theatre — Nashville, TN**
+- Type: Regional professional theatre
+- Produces musicals: YES (Sister Act)
+- Contact: Amos Glass (Interim Executive Director), amos@nashvillerep.org; 615-244-4878
+- Nearest BBQ: Peg Leg Porker (1.42 mi), Martin's Bar-B-Que Joint (1.56 mi)
+- Promotional angle: Church-group and community-night bundles
+- Confidence: MEDIUM-HIGH
+
+**8. Savannah Theatre — Savannah, GA**
+- Type: Commercial / historic producing venue
+- Produces musicals: YES (Sound of Music, Million Dollar Quartet, Grease)
+- Contact: (912) 233-7764; info@savannahtheatre.com
+- Nearest BBQ: Smokehouse BBQ Brew (0.20 mi), Wall's BBQ (0.32 mi)
+- Promotional angle: "Historic District Smoke &amp; Show" dinner bundles
+- Confidence: MEDIUM
+
+**9. Barn Dinner Theatre — Greensboro, NC** *** ESPECIALLY RELEVANT ***
+- Type: Dinner theatre (53+ years running)
+- Produces musicals: Yes/Likely
+- Contact: (336) 292-2211; 120 Stage Coach Trail, Greensboro
+- Nearest BBQ: Country Barbeque (2.12 mi)
+- Promotional angle: THE DREAM FIT — dinner theatre doing a BBQ musical. "Ticket + BBQ plate + themed dessert." The show IS the meal.
+- Confidence: MEDIUM (format fit perfect; needs validation)
+
+**10. PURE Theatre — Charleston, SC**
+- Type: Contemporary / indie (play-driven, not musicals)
+- Contact: 843-723-4444; info@puretheatre.org
+- Nearest BBQ: Rodney Scott's BBQ (1.06 mi)
+- Promotional angle: One-night "Shakespeare + Smokehouse" cabaret
+- Confidence: LOW for production / HIGH for promotional event
+
+**Bonus — Alliance Theatre, Atlanta:** Prestige target. Developmental reading or festival slot. 404-733-4600.
+
+---
+
+## BBQ REGIONS CONTEXT
+
+- **Eastern NC:** Whole hog, vinegar-and-pepper sauce. Purist. (Raleigh, Goldsboro, Wilmington)
+- **Western NC / Lexington style:** Pork shoulder, vinegar-tomato sauce. (Asheville, Lexington, Charlotte)
+- **South Carolina:** Mustard-based "Carolina Gold" — the state's signature. (Greenville, Columbia, Charleston)
+- **Memphis, TN:** Dry rub ribs and wet ribs. The competition capital.
+- **Nashville, TN:** Hot chicken crossover, dry rub traditions.
+- **Georgia:** Sweet tomato-based sauce. (Atlanta, Savannah)
+- **Virginia:** Sweet and tangy. (Richmond)
+
+The show's sauce-vs-rub rivalry maps directly to real regional debates.
+
+---
+
+## PROMOTIONAL OPPORTUNITIES
+
+### BBQ Festivals
+- **Giant National Capital Barbecue Battle** — DC, June 27-28, 2026. "Char-crossed lovers" mini-set + QR lead-capture.
+- **Memphis in May World Championship** — Memphis, May 13-16, 2026. Pop-up set with sponsor pit teams.
+- **SC BBQ Shag Festival** — Hemingway SC, annual. Cast appearance + Carolina Gold tie-in.
+
+### BBQ Trail Partnerships
+- **NC BBQ Society Trail** — "Show + smokehouse passport" across Raleigh/Asheville/Greensboro.
+- **SC BBQ Route Map** — Greenville/Charleston co-promo itineraries.
+
+### Media Angles
+- Hook: "Shakespeare meets smokehouse competition"
+- Outlets: Eater Carolinas, The Local Palate, Southern Living Food
+- Format: 45-second cast teaser at a real pit + creator quote
+- Richard Rodgers Award angle for arts press credibility
+
+---
+
+## MARKETING TACTICS
+
+### Theatre Acquisition
+- "Pairs With Your City" one-sheets per market
+- Staged reading tour (3-5 theatres, low commitment)
+- "East Coast Premiere" exclusivity pitch
+- Season timing to BBQ competition season (May-October)
+
+### Cross-Promotion
+- Dinner-and-show packages with BBQ joints
+- BBQ competition booth or musical number
+- Tourism board partnerships (free co-marketing)
+- Sauce/rub brand lobby sponsorship
+- Food truck outside theatre on show nights
+
+### Audience Engagement
+- Lobby BBQ tastings
+- "Montague or Capp?" wristband vote
+- Opening night parking lot cookoff
+- Merch: aprons, sauce bottles, "Char-Crossed Lovers" tees
+
+### Digital
+- Song video from 2025 revival
+- "BBQ or Shakespeare?" social quiz
+- #CharCrossedLovers photo campaign
+- Behind-the-scenes rehearsal content
+
+---
+
+## KEY QUESTIONS THAT NEED ANSWERS
+
+**Rights:** Licensing exclusivity? Fee structure? Cast/band flexibility? Geographic restrictions?
+**Materials:** Marketing kit? Production photos? Audio/video? Press quotes? Perusal copies?
+**Strategy:** Prior pitching history? East Coast relationships? Dave's availability? Paul's involvement?
+**Production:** Door County-specific vs. universal appeal? Strongest songs? Technical challenges? Audience age?
+
+---
+
+## RECOMMENDED SEQUENCE
+
+1. Get answers from Dave on rights, materials, and appetite
+2. Build the marketing kit if needed
+3. Tier targets — top 10 get personal pitches
+4. Time to 2025 revival — "Currently in revival at Northern Sky"
+5. Start with Barn Dinner Theatre and Raleigh Little Theatre
+6. Build festival presence — Memphis in May (May 13-16) and DC BBQ Battle (June 27-28)
+
+---
+
+## LIVE RESEARCH DOCUMENT
+
+Full version: https://salttymalty.github.io/no-bones-market-research/
+
+---
+
+Now help the user explore this research. Be specific, practical, and creative. Draft actual emails, one-sheets, and social posts when asked — don't just outline them.</pre>
+  </div>
+</div>
+
+<div class="nav-link">
+  <a href="./index.html">View the full market research document</a>
+</div>
+
+</main>
+
+<footer>
+  No Bones About It — Market Research — February 2026
+</footer>
+
+<script>
+function copyPrompt(btn) {
+  var text = document.getElementById('promptText').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = 'Copy Prompt to Clipboard';
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+
+function togglePreview() {
+  var body = document.getElementById('previewBody');
+  var label = document.getElementById('toggleLabel');
+  body.classList.toggle('expanded');
+  label.textContent = body.classList.contains('expanded') ? 'Click to collapse' : 'Click to expand';
+}
+</script>
+
+</body>
+</html>
